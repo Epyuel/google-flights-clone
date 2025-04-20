@@ -65,7 +65,7 @@ export default function SearchBar() {
         {
           headers: {
             "X-RapidAPI-Host": "sky-scrapper.p.rapidapi.com",
-            "X-RapidAPI-Key": "8d8040f5bfmshcd41c133fff384fp1a3687jsne076c32cdf25",
+            "X-RapidAPI-Key": import.meta.env.VITE_FLIGHTS_API_KEY,
           },
         }
       );
@@ -130,7 +130,7 @@ export default function SearchBar() {
         countryCode: 'US'
       },
       headers: {
-        'x-rapidapi-key': '8d8040f5bfmshcd41c133fff384fp1a3687jsne076c32cdf25',
+        'x-rapidapi-key': import.meta.env.VITE_FLIGHTS_API_KEY,
         'x-rapidapi-host': 'sky-scrapper.p.rapidapi.com'
       }
     };
