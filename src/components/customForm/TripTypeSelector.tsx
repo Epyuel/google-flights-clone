@@ -25,11 +25,11 @@ const TripTypeSelector: React.FC<TripTypeSelectorProps> = ({ value, onChange }) 
                     onChange={handleChange}
                     label="Trip"
                 >
-                    <MenuItem value="Round trip">
+                    <MenuItem value="round trip">
                         <em>Round trip</em>
                     </MenuItem>
-                    <MenuItem value={"One way"}>One way</MenuItem>
-                    <MenuItem value={"Multi-city"}>Multi-way</MenuItem>
+                    <MenuItem value={"one way"}>One way</MenuItem>
+                    <MenuItem value={"multi-city"}>Multi-city</MenuItem>
                     {/* <MenuItem value={30}>Thirty</MenuItem> */}
                 </Select>
             </FormControl>

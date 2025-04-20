@@ -33,13 +33,13 @@ export interface Flight {
     price: string;            
 }
 
-const FlightAccordion = ({flight}:{flight:Flight}) => {
+const FlightAccordion = ({flight,tripType}:{flight:Flight,tripType:string}) => {
   const departureTime = dayjs(flight.departureTime).format('hh:mm A');  
   const arrivalTime = dayjs(flight.arrivalTime).format('hh:mm A');  
   const [isOpen,setIsOpen] = useState(false);
   return (
     <Accordion 
-      onChange={(_,expanded)=>setIsOpen(!expanded)}
+      onChange={(_,expanded)=>setIsOpen(expanded)}
       sx={{
         boxShadow: 'none',
         border: '1px solid #E2E8F0',
@@ -92,7 +92,7 @@ const FlightAccordion = ({flight}:{flight:Flight}) => {
                 fontFamily: '"Inter", sans-serif'
               }}
             >
-              { isOpen ? `${departureTime} - ${arrivalTime}`: `Return · ${dayjs(flight.arrivalTime).format('ddd, MMM D')}`}
+              { !isOpen ? `${departureTime} - ${arrivalTime}`: `Return · ${dayjs(flight.arrivalTime).format('ddd, MMM D')}`}
             </Typography>
           </Box>
         </Box>
@@ -105,7 +105,7 @@ const FlightAccordion = ({flight}:{flight:Flight}) => {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2,marginRight:'1rem' }}>
           <Box sx={{ textAlign: 'right' }}>
             <Typography sx={{ fontWeight: 500, color: '#1A1F2C' }}>{flight.price}</Typography>
-            <Typography sx={{ fontSize: '14px', color: '#8E9196' }}>round trip</Typography>
+            <Typography sx={{ fontSize: '14px', color: '#8E9196' }}>{tripType}</Typography>
           </Box>
         </Box>
       </AccordionSummary>

@@ -6,9 +6,9 @@ import axios from "axios";
 import { Dayjs } from "dayjs";
 import { Snackbar, Alert, CircularProgress } from "@mui/material";
 import debounce from 'lodash.debounce';
-import TripTypeSelector from "./TripTypeSelector";
-import PassengerSelector from "./PassengerSelector";
-import TripOptions from "./TripOptions";
+import TripTypeSelector from "./customForm/TripTypeSelector";
+import PassengerSelector from "./customForm/PassengerSelector";
+import TripOptions from "./customForm/TripOptions";
 import Origin from "./origin";
 import FlightsGrid from "./FlightsResults";
 import { Flight } from "./FlightAccordion";
@@ -20,7 +20,7 @@ export interface AirportOption {
 }
 
 export default function SearchBar() {
-  const [trip, setTrip] = useState<string>("");
+  const [trip, setTrip] = useState<string>("round trip");
   const [passenger, setPassenger] = useState<number>(1);
   const [type, setType] = useState<string>("economy");
 
@@ -112,60 +112,6 @@ export default function SearchBar() {
   }, [destinationInputValue, fetchDestinationOptions]);
 
   const handleSearch = async () => {
-    // const params = {
-    //   // originSkyId: originSkyId,
-    //   // originEntityId: originId,
-    //   // destinationEntityId: destinationId,
-    //   // destinationSkyId: destinationSkyId,
-    //   // date: departure ? departure.format("YYYY-MM-DD") : "",
-    //   // returnDate: returnDate ? returnDate.format("YYYY-MM-DD") : "",
-    //   // cabinClass: 'economy',
-    //   // // cabinClass: type.toLowerCase(),
-    //   // adults: passenger,
-    //   // sortBy: "best",
-    //   // currency: "USD",
-    //   // market: "en-US",
-    //   // countryCode: "US",
-    //   originSkyId: 'LOND',
-    //   destinationSkyId: 'NYCA',
-    //   originEntityId: '27544008',
-    //   destinationEntityId: '27537542',
-    //   date: '2024-07-01',
-    //   cabinClass: 'economy',
-    //   adults: '1',
-    //   sortBy: 'best',
-    //   currency: 'USD',
-    //   market: 'en-US',
-    //   countryCode: 'US'
-    // };
-    // console.log(params,"params");
-    // try {
-    //   setIsLoading(true);
-    //   const response = await axios.get(
-    //     "https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchFlights",
-    //     {
-    //       params,
-    //       headers: {
-    //         "X-RapidAPI-Key": '8d8040f5bfmshcd41c133fff384fp1a3687jsne076c32cdf25',
-    //         "X-RapidAPI-Host": "sky-scrapper.p.rapidapi.com",
-    //       },
-    //     }
-    //   );
-    //   console.log(response.data,"Data");
-    //   // setFlights(response.data);
-    //   // setTimeout(() => {
-    //   //   // setFlights(data);
-    //   //   setIsLoading(false);
-    //   // }, 3000);
-    // } catch (error) {
-    //   console.error("Error fetching flights:", error);
-    //   // setTimeout(() => {
-    //   //   setFlights(data);
-    //   //   setIsLoading(false);
-    //   // }, 3000);
-    // } finally{
-    //   setIsLoading(false);
-    // }
     const options = {
       method: 'GET',
       url: 'https://sky-scrapper.p.rapidapi.com/api/v2/flights/searchFlights',
@@ -192,7 +138,7 @@ export default function SearchBar() {
     setIsLoading(true)
     try {
       const response = await axios.request(options);
-      setFlights((response?.data?.data?.itineraries?.slice(0,10)??[]).map(transformFlightData))
+      setFlights((response?.data?.data?.itineraries?.slice(0,50)??[]).map(transformFlightData))
     } catch (error) {
       console.error(error);
     }finally{
@@ -202,6 +148,8 @@ export default function SearchBar() {
 
   return (
     <>
+      {/* Search form */}
+
       <div className="container mx-auto flex justify-center items-center p-2 md:p-0">
         <div className="border border-gray-300 p-6 grid grid-cols-1 gap-6 bg-white shadow-lg rounded-lg">
           <div className="flex flex-row md:flex-row">
@@ -240,12 +188,12 @@ export default function SearchBar() {
           {isLoading ? (
             <>
               <CircularProgress size={24} color="inherit" />
-              <p className="my-auto">{"Explore"}</p>
+              <p className="my-auto">{"Search"}</p>
             </>
           ) : (
             <>
               <Search />
-              <p className="my-auto">{"Explore"}</p>
+              <p className="my-auto">{"Search"}</p>
             </>
           )}
         </button>
@@ -263,7 +211,9 @@ export default function SearchBar() {
           </Alert>
         </Snackbar>
       </div>
-      <FlightsGrid flightsData={flights} />
+
+      {/* Search results */}
+      <FlightsGrid flightsData={flights} tripType={trip} />
     </>
   );
 }
